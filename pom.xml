@@ -31,7 +31,7 @@
     <scm>
         <connection>scm:git:git://github.com/tidal-code/cukes.git</connection>
         <developerConnection>scm:git:ssh://github.com/tidal-code/cukes.git</developerConnection>
-        <url>//github.com/tidal-code/Wave.git</url>
+        <url>//github.com/tidal-code/cuckes.git</url>
     </scm>
 
     <distributionManagement>
