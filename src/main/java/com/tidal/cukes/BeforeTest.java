@@ -40,7 +40,7 @@ public class BeforeTest {
         String browser = Config.BROWSER_NAME;
         
         //Wait Duration
-        Duration duration = Duration.ofSeconds(4);
+        Duration duration = Duration.ofSeconds(5);
 
         AbstractDriverOptions<?> options = null;
 

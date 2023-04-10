@@ -6,7 +6,7 @@
 
     <groupId>io.github.tidal-code</groupId>
     <artifactId>cukes</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.3</version>
 
     <name>Tidal Cucumber Support</name>
     <description>Cucumber Support for Tidal Framework</description>
@@ -55,7 +55,7 @@
         <dependency>
             <groupId>io.github.tidal-code</groupId>
             <artifactId>wave</artifactId>
-            <version>1.2.3</version>
+            <version>1.2.4</version>
         </dependency>
         <dependency>
             <groupId>io.cucumber</groupId>
