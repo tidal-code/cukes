@@ -1,11 +1,15 @@
-package com.tidal.cukes;
+package com.tidal.cukes.hooks;
 
 import com.tidal.flow.assertions.stackbuilder.ErrorStack;
+import com.tidal.stream.azure.testresults.AdoTestResultUpdates;
+import com.tidal.stream.zephyrscale.ZephyrScale;
+import com.tidal.utils.filehandlers.FileOutWriter;
+import com.tidal.utils.filehandlers.FilePaths;
+import com.tidal.utils.propertieshandler.Config;
+import com.tidal.utils.propertieshandler.PropertiesFinder;
+import com.tidal.utils.utils.CheckString;
+import com.tidal.utils.utils.Helper;
 import com.tidal.wave.browser.Driver;
-import com.tidal.wave.filehandlers.FileOutWriter;
-import com.tidal.wave.filehandlers.FilePaths;
-import com.tidal.wave.propertieshandler.Config;
-import com.tidal.wave.utils.Helper;
 import io.cucumber.java.After;
 import io.cucumber.java.Scenario;
 import io.qameta.allure.Allure;
@@ -39,10 +43,14 @@ public class AfterTest {
     public void afterScenario(Scenario scenario) {
         String executionType = Config.EXECUTION_TYPE;
 
+        AdoTestResultUpdates.Results azureTestResultUpdates = AdoTestResultUpdates.Results.FAILED;;
+
+
         try {
             if (scenario.isFailed()) {
                 saveScreenShot(scenario);
             } else {
+                azureTestResultUpdates = AdoTestResultUpdates.Results.PASSED;
                 passedScenario(scenario);
             }
         } finally {
@@ -51,6 +59,21 @@ public class AfterTest {
                     close();
                 }
             } finally {
+                String adoResultsUpdate = PropertiesFinder.getProperty("ado.results.update");
+
+                if(CheckString.isNotNullOrEmpty(adoResultsUpdate) && adoResultsUpdate.equals("true")){
+                    AdoTestResultUpdates.updateTestResult(scenario.getName(), azureTestResultUpdates);
+                }
+
+                String zephyrResultUpdate = PropertiesFinder.getProperty("zephyr.results.update");
+
+                if(CheckString.isNotNullOrEmpty(zephyrResultUpdate) && zephyrResultUpdate.equals("true")){
+                    new ZephyrScale.TestResults().updateCucumberResults()
+                            .testTagProcessor(scenario.getSourceTagNames())
+                            .testStatus(!scenario.isFailed()) //Negation added to negate the negative result.
+                            .publish();
+                }
+
                 new ErrorStack().execute();
             }
         }

@@ -1,17 +1,17 @@
-package com.tidal.cukes;
+package com.tidal.cukes.hooks;
 
+import com.tidal.utils.propertieshandler.Config;
+import com.tidal.utils.propertieshandler.PropertiesFinder;
+import com.tidal.utils.scenario.ScenarioInfo;
 import com.tidal.wave.browser.Browser;
 import com.tidal.wave.options.BrowserWithOptions;
-import com.tidal.wave.propertieshandler.Config;
-import com.tidal.wave.propertieshandler.PropertiesFinder;
-import com.tidal.wave.scenario.ScenarioInfo;
 import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
 import org.openqa.selenium.remote.AbstractDriverOptions;
 
 import java.time.Duration;
 
-import static com.tidal.wave.utils.CheckString.isNullOrEmpty;
+import static com.tidal.utils.utils.CheckString.isNullOrEmpty;
 
 
 /**
