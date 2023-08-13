@@ -1,7 +1,7 @@
-package com.tidal.cukes;
+package com.tidal.cukes.hooks;
 
-import com.tidal.wave.loggers.Logger;
-import com.tidal.wave.propertieshandler.PropertiesFinder;
+import com.tidal.utils.loggers.Logger;
+import com.tidal.utils.propertieshandler.PropertiesFinder;
 import io.cucumber.java.Scenario;
 
 public class TestStatusMessages {

@@ -3,16 +3,16 @@ package com.tidal.cukes.cukes.stepdefs;
 import com.tidal.cukes.cukes.actions.BingHomePageActions;
 import com.tidal.cukes.cukes.actions.GoogleHomePageActions;
 import com.tidal.cukes.cukes.rules.InputValueRules;
+import com.tidal.utils.filehandlers.FileReader;
+import com.tidal.utils.loggers.Logger;
 import com.tidal.wave.exceptions.RuntimeTestException;
-import com.tidal.wave.filehandlers.FileReader;
-import com.tidal.wave.loggers.Logger;
 import io.cucumber.java.PendingException;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.Assert;
 
 public class StepDefs {
-    Logger logger =  new Logger().forClass(StepDefs.class);
+    Logger logger =  new Logger(StepDefs.class);
 
     @When("I open google")
     public void iOpenGoogle() {

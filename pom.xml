@@ -6,7 +6,7 @@
 
     <groupId>io.github.tidal-code</groupId>
     <artifactId>cukes</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.9-SNAPSHOT</version>
 
     <name>Tidal Cucumber Support</name>
     <description>Cucumber Support for Tidal Framework</description>
@@ -49,13 +49,33 @@
         <maven.surefire.plugin.version>2.21.0</maven.surefire.plugin.version>
         <cucumber-version>7.11.2</cucumber-version>
         <slf4j.version>2.0.6</slf4j.version>
+        <aspectj.version>1.9.1</aspectj.version>
+        <parallelSessions>4</parallelSessions>
+        <tagName>@add</tagName>
+        <tagNameTwo>@add</tagNameTwo>
+        <tagNameThree>@add</tagNameThree>
+        <ignoreTag>@ignore</ignoreTag>
+        <ignoreTagTwo>@ignore</ignoreTagTwo>
+        <wipTag>@wip</wipTag>
+        <dryRun>false</dryRun>
+        <runner>TestNgRunner</runner>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>io.github.tidal-code</groupId>
             <artifactId>wave</artifactId>
-            <version>1.2.3</version>
+            <version>1.3.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>io.github.tidal-code</groupId>
+            <artifactId>utils</artifactId>
+            <version>0.0.4</version>
+        </dependency>
+        <dependency>
+            <groupId>io.github.tidal-code</groupId>
+            <artifactId>stream</artifactId>
+            <version>0.0.4-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>io.cucumber</groupId>
@@ -135,6 +155,51 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven.surefire.plugin.version}</version>
+                <configuration>
+                    <useSystemClassLoader>false</useSystemClassLoader>
+                    <includes>
+                        <include>**/${runner}*.*</include>
+                    </includes>
+                    <testFailureIgnore>true</testFailureIgnore>
+                    <argLine>
+                        -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
+                        -Dcucumber.plugin="io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm, pretty,
+                        junit:target/junit-reports/${runner}.xml"
+                        -Dcucumber.filter.tags="(${tagName} or ${tagNameTwo} or ${tagNameThree}) and not (${ignoreTag}
+                        or ${wipTag})"
+                        -Dcucumber.execution.dry-run=${dryRun}
+                    </argLine>
+                    <systemProperties>
+                        <property>
+                            <name>parallel</name>
+                            <value>methods</value>
+                        </property>
+                        <property>
+                            <name>perCoreThreadCount</name>
+                            <value>false</value>
+                        </property>
+                        <property>
+                            <name>dataproviderthreadcount</name>
+                            <value>${parallelSessions}</value>
+                        </property>
+                        <property>
+                            <name>allure.results.directory</name>
+                            <value>${basedir}/target/allure-results</value>
+                        </property>
+                    </systemProperties>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.aspectj</groupId>
+                        <artifactId>aspectjweaver</artifactId>
+                        <version>${aspectj.version}</version>
+                    </dependency>
+                </dependencies>
             </plugin>
         </plugins>
     </build>
